@@ -117,6 +117,9 @@ def console(loginusername, pcname) :
 			table.add_row("user-add", "add more user(beta).", "v1.0.0.9.3.2 dev")
 			table.add_row("user-delete", "add more user(beta).", "v1.0.0.9.3.2 dev")
 			table.add_row("ipconfig-public", "get your public ip.", "v1.0.0.9.3.4 dev")
+			table.add_row("simplenotes", "open simplenotes v1.0", "v1.0.0.0.9.5 dev / v1.0.0.1 beta")
+			table.add_row("warehouse_admin-run", "(chinese version)", "v1.0.0.0.9.5 dev / v1.0.0.1 beta")
+
 			console = Console()
 			console.print(table)
 		if command == "pull" :
@@ -284,3 +287,7 @@ def console(loginusername, pcname) :
 				print(f"Country: {country} ({cc})") 
 			else :
 				print(f"Error")
+		if command == "simplenotes" :
+			simplenotes.NoteApp().run()
+		if command == "warehouse_admin-run" :
+			os.system("gunicorn app.Warehouse-Management-System.app:app -b 0.0.0.0:8000")
