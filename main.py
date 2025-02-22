@@ -17,7 +17,7 @@ system_version = "v1.0.0.9.4 dev"
 #</start_define_system_var>
 
 
-#function aera
+
 def echo(function_echo_text) :
 	print(function_echo_text)
 

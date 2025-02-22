@@ -13,6 +13,7 @@ import platform
 import requests
 import json
 import socket
+from app import simplenotes
 
 def setup_setupdb():
     conn = sqlite3.connect('users.db')
@@ -86,7 +87,7 @@ def setup():
 def console(loginusername, pcname) :
 	#<start_redefine_system_var>
 	dir = "/"
-	system_version = "v1.0.0.9.4 dev"
+	system_version = "v1.0.0.9.6 dev"
 	#</start_redefine_system_var>
 	while True: 
 		command = input(f"{loginusername}@{pcname}:{dir} ~$ ")
@@ -100,10 +101,7 @@ def console(loginusername, pcname) :
 			table.add_row("logout", "logout device", "v1.0.0.1 dev")
 			table.add_row("shutdown", "close your device", "v1.0.0.1 dev")
 			table.add_row("reboot", "reboot device", "v1.0.0.1 dev")
-
 			table.add_row("reset", "reset the system", "v1.0.0.4 dev")
-
-
 			table.add_row("get", "get the app or function in this command", "v1.0.0.~8~9 dev")
 			table.add_row("get-list", "list what item you can download", "v1.0.0.~8~9.2 dev")
 			table.add_row("package-use", "use the package you downloaded.", "v1.0.0.9.2 dev")
@@ -119,7 +117,7 @@ def console(loginusername, pcname) :
 			table.add_row("ipconfig-public", "get your public ip.", "v1.0.0.9.3.4 dev")
 			table.add_row("simplenotes", "open simplenotes v1.0", "v1.0.0.0.9.5 dev / v1.0.0.1 beta")
 			table.add_row("warehouse_admin-run", "(chinese version)", "v1.0.0.0.9.5 dev / v1.0.0.1 beta")
-
+			table.add_row("chat", "open worldchat.customapp", "v1.0.0.0.9.6 dev / v1.0.0.2 beta")
 			console = Console()
 			console.print(table)
 		if command == "pull" :
@@ -212,7 +210,6 @@ def console(loginusername, pcname) :
 				for package in packages:
 					table.add_row(package["name"], package["packagename"])
 
-
 				console.print(table)
 			else:
 				console.print(f"Error: {response.status_code}", style="red")
@@ -253,7 +250,6 @@ def console(loginusername, pcname) :
 			else :
 				print(f"not have {rm_file_path}")
 		if command == "user-add" :
-
 			setup_usersignup__username = Prompt.ask("New User's Username ")
 			setup_usersignup(setup_usersignup__username, Prompt.ask("New User's Password "))
 			console_useradd_1path = f"user/{setup_usersignup__username}/downloads"
@@ -281,13 +277,15 @@ def console(loginusername, pcname) :
 			if response.status_code == 200:
 				data = response.json()
 				ip = data.get("ip")  
-				country = data.get("country")  
+				country = data.get("country") 
 				cc = data.get("cc") 
 				print(f"Your Public IP: {ip}")
-				print(f"Country: {country} ({cc})") 
+				print(f"Country: {country} ({cc})")
 			else :
 				print(f"Error")
 		if command == "simplenotes" :
 			simplenotes.NoteApp().run()
 		if command == "warehouse_admin-run" :
 			os.system("gunicorn app.Warehouse-Management-System.app:app -b 0.0.0.0:8000")
+		if command == "chat" :
+			os.system("python app/worldchat.py")
